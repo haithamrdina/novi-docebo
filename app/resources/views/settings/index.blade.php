@@ -27,10 +27,10 @@
                 <div class="row g-0">
                     <div class="col-3 d-none d-md-block border-end">
                         <div class="card-body">
-                            <h4 class="subheader">Userfields setting</h4>
+                            <h4 class="subheader">Users fields setting</h4>
                             <div class="list-group list-group-transparent">
                                 <a href="{{ route('settings.index') }}"
-                                    class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.index') ? 'active' : '' }}">Userfields</a>
+                                    class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.index') ? 'active' : '' }}">Users fields</a>
                             </div>
                             <h4 class="subheader mt-4">Connected Apps Setting</h4>
                             <div class="list-group list-group-transparent">
@@ -39,7 +39,7 @@
                                     LMS</a>
                                 <a href="{{ route('settings.novi.index') }}"
                                     class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.novi.index') ? 'active' : '' }}">Novi
-                                    CMS</a>
+                                    AMS</a>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <form action="{{ route('settings.update') }}" method="post">
                             @csrf
                             <div class="card-body">
-                                <h2 class="mb-4">USERFIELDS</h2>
+                                <h2 class="mb-4">USERS FIELDS</h2>
                                 <h3 class="card-title mt-4">LIST</h3>
                                 <div class="table-responsive">
                                     <table class="table mb-0">
@@ -55,7 +55,7 @@
                                             <tr>
                                                 <th>DOCEBO ID</th>
                                                 <th>DOCEBO NAME</th>
-                                                <th>NOVI CMS NAME</th>
+                                                <th>NOVI AMS NAME</th>
                                             </tr>
                                         </thead>
                                         <tbody>

@@ -1,6 +1,6 @@
 <?php
 return [
-    '1' => 'PersonalPhone',
+    '1' => 'PersonalMobile',
     '2' => 'PersonalEmail',
     '3' => 'DirectoryGallery',
     '4' => 'Email',

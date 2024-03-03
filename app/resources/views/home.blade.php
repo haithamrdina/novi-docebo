@@ -59,14 +59,14 @@
                                     <a href="{{ route('home') }}" class="btn btn-primary w-100  mb-3">
                                         Retrieve users from docebo LMS
                                     </a>
-                                    <a href="{{ route('home.empty') }}" class="btn btn-danger w-100  mb-3">
-                                        Clear userfields data form docebo
-                                    </a>
                                     <a href="{{ route('home.verify') }}" class="btn btn-warning w-100  mb-3">
-                                        Check your data with NOVI CMS
+                                        Check your data with NOVI AMS
                                     </a>
                                     <a href="{{ route('home.sync') }}" class="btn btn-success w-100 {{ !isset($noviDoceboUsers) ? 'disabled' : '' }} mb-3">
-                                        synchronize your data
+                                        Synchronize your data
+                                    </a>
+                                    <a href="{{ route('home.empty') }}" class="btn btn-danger w-100  mb-3">
+                                        Clear users fields data from docebo
                                     </a>
                                 </div>
                             </div>

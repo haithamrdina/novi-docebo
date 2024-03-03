@@ -3,6 +3,6 @@
 return [
     'title' => 'American Academy of Implant Dentistry',
     'title_prefix' => 'AAID',
-    'bottom_title' => 'American Academy of Implant Dentistry',
+    'bottom_title' => 'Ayoub Haouari',
     'current_version' => 'v1.0',
 ];

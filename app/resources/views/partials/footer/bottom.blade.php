@@ -4,8 +4,8 @@
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
-                        Copyright &copy; {{ now()->year }} NOVI-AIDD by
-                        <a href="https://aaid.docebosaas.com"
+                        Copyright &copy; {{ now()->year }} by
+                        <a href="javascript:void(0)"
                            class="link-secondary text-red">{{config('system.bottom_title', 'AAID')}}</a>.
                         All rights reserved -
                         <a href="javascript:void(0)" class="link-secondary text-red" rel="noopener">

@@ -27,14 +27,14 @@
                 <div class="row g-0">
                     <div class="col-3 d-none d-md-block border-end">
                         <div class="card-body">
-                            <h4 class="subheader">Userfields setting</h4>
+                            <h4 class="subheader">Users fields setting</h4>
                             <div class="list-group list-group-transparent">
-                                <a href="{{ route('settings.index') }}" class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.index') ? 'active' : '' }}">Userfields</a>
+                                <a href="{{ route('settings.index') }}" class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.index') ? 'active' : '' }}">Users fields</a>
                             </div>
                             <h4 class="subheader mt-4">Connected Apps Setting</h4>
                             <div class="list-group list-group-transparent">
                                 <a href="{{ route('settings.docebo.index') }}" class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.docebo.index') ? 'active' : '' }}">Docebo LMS</a>
-                                <a href="{{ route('settings.novi.index') }}" class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.novi.index') ? 'active' : '' }}" >Novi CMS</a>
+                                <a href="{{ route('settings.novi.index') }}" class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('settings.novi.index') ? 'active' : '' }}" >Novi AMS</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <form action="{{ route('settings.novi.update') }}" method="post">
                             @csrf
                             <div class="card-body">
-                                <h2 class="mb-4">NOVI CMS</h2>
+                                <h2 class="mb-4">NOVI AMS</h2>
                                 <h3 class="card-title mt-4">Endpoint</h3>
                                 <div class="row g-3">
                                     <div class="col-md">
