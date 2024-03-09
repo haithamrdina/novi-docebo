@@ -37,13 +37,12 @@ class WebHookController extends Controller
                 Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
                 break;
             case 'customer.removed':
-                $this->costumerCreated($entityUniqueId);
+                $this->costumerRemoved($entityUniqueId);
                 Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Archived successfully in doecebo');
                 break;
             default:
                 break;
         }
-
         return response()->json(['status' => 'success']);
     }
 
