@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WebHookController;
 use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
@@ -48,6 +49,8 @@ Route::get('/test', function () {
     File::put($configFilePath, $configContent);
     return view('welcome');
 });
+
+Route::post('/listener-novi-update', [WebHookController::class, 'webhookNoviUpdateHandler']);
 
 require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () {
