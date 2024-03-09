@@ -70,6 +70,9 @@ class GetMemberDetailFromNovi extends Request
         }
         unset($value);
 
-        return $details;
+        return [
+            'email' => $response['Email'],
+            'details' => $details
+        ];
     }
 }

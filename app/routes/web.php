@@ -5,9 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WebHookController;
 use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
+use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
 use App\Http\Integrations\Novi\Requests\GetMemberCustomFiels;
+use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersSimpleDataFromNovi;
 use Illuminate\Support\Facades\File;
@@ -50,6 +52,13 @@ Route::get('/test', function () {
     return view('welcome');
 });
 
+Route::get('check-docebo-user', function(){
+    $noviConnector = new NoviConnector;
+    $entityUniqueId = '310ae370-dacb-4ca1-ae88-742b2eacd6c7';
+    $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
+    $noviUserdata = $memberDataResponse->dto();
+    dd($noviUserdata);
+});
 Route::post('/listener-novi-update', [WebHookController::class, 'webhookNoviUpdateHandler']);
 
 require __DIR__.'/auth.php';
