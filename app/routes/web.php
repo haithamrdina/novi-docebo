@@ -55,15 +55,16 @@ Route::get('/test', function () {
 });
 Route::get('check-docebo-user', function(){
     $noviConnector = new NoviConnector;
-    $entityUniqueId = '310ae370-dacb-4ca1-ae88-742b2eacd6c7';
-    $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
-    $noviUserdata = $memberDataResponse->dto();
-    dd($noviUserdata);
+    $noviUsersSimpleDataResponse = $noviConnector->send(new GetUsersDataFromNovi('ayoub.haouari@gmail.com'));
+    $noviUsers = $noviUsersSimpleDataResponse->dto();
+    dd($noviUsers);
 });
 /** tests @e */
 
 /** webhooks @s */
 Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
+Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler']);
+
 /** webhooks @e */
 
 /** app @s */
