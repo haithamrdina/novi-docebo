@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+/** tests @s */
 Route::get('novi-users' , function(){
     $doceboConnector = new DoceboConnector();
     $userId = '13081';
@@ -51,7 +53,6 @@ Route::get('/test', function () {
     File::put($configFilePath, $configContent);
     return view('welcome');
 });
-
 Route::get('check-docebo-user', function(){
     $noviConnector = new NoviConnector;
     $entityUniqueId = '310ae370-dacb-4ca1-ae88-742b2eacd6c7';
@@ -59,8 +60,13 @@ Route::get('check-docebo-user', function(){
     $noviUserdata = $memberDataResponse->dto();
     dd($noviUserdata);
 });
-Route::post('/listener-novi-update', [WebHookController::class, 'webhookNoviUpdateHandler']);
+/** tests @e */
 
+/** webhooks @s */
+Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
+/** webhooks @e */
+
+/** app @s */
 require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () {
 
@@ -77,3 +83,4 @@ Route::middleware('auth')->group(function () {
         Route::post('novi', [ConfigController::class, 'noviupdate'])->name('novi.update');
     });
 });
+/** app @e */

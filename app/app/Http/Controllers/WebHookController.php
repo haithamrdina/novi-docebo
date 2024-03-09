@@ -17,7 +17,7 @@ class WebHookController extends Controller
     * @param Request $request
     * @return json
     */
-   public function webhookNoviUpdateHandler(Request $request){
+    public function webhookNoviHandler(Request $request){
         $payload = json_decode($request->getContent(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -47,7 +47,7 @@ class WebHookController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-   public function costumerUpdated($entityUniqueId){
+    public function costumerUpdated($entityUniqueId){
         $noviConnector = new NoviConnector;
         $doceboConnector =  new DoceboConnector;
 
@@ -59,9 +59,9 @@ class WebHookController extends Controller
         if($doceboUserData){
             $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
         }
-   }
+    }
 
-   public function costumerRemoved($entityUniqueId){
+    public function costumerRemoved($entityUniqueId){
         $noviConnector = new NoviConnector;
         $doceboConnector =  new DoceboConnector;
 
@@ -73,6 +73,5 @@ class WebHookController extends Controller
         if($doceboUserData){
             $doceboConnector->send(new UpdateUserStatusFromDocebo($doceboUserData));
         }
-
-   }
+    }
 }
