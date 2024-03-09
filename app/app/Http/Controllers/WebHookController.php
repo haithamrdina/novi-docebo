@@ -34,11 +34,11 @@ class WebHookController extends Controller
         switch ($event) {
             case 'customer.updated':
                 $this->costumerUpdated($entityUniqueId);
-                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
+                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
                 break;
             case 'customer.removed':
                 $this->costumerRemoved($entityUniqueId);
-                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Archived successfully in doecebo');
+                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Archived successfully in docebo');
                 break;
             default:
                 break;
