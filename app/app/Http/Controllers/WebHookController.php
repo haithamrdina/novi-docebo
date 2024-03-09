@@ -32,15 +32,15 @@ class WebHookController extends Controller
 
         switch ($event) {
             case 'customer.created':
-
+                $this->costumerCreated($entityUniqueId);
+                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
                 break;
             case 'customer.updated':
                 $this->costumerUpdated($entityUniqueId);
-                Log::info('Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
+                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
                 break;
             case 'customer.removed':
 
-                break;
 
             default:
                 break;
@@ -64,7 +64,17 @@ class WebHookController extends Controller
    }
 
    public function costumerCreated($entityUniqueId){
+        $noviConnector = new NoviConnector;
+        $doceboConnector =  new DoceboConnector;
 
+        $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
+        $noviUserData = $memberDataResponse->dto();
+
+        $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
+        $doceboUserData = $doceboUserDataResponse->dto();
+        if($doceboUserData){
+            $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
+        }
    }
 
    public function costumerRemoved($entityUniqueId){
