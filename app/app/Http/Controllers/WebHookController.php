@@ -89,7 +89,7 @@ class WebHookController extends Controller
         }
 
         $event = $payload['event'] ?? null;
-        $email = $payload['payload']['email'] ?? null;
+        $email = $payload['payload']['username'] ?? null;
         $doceboId = $payload['payload']['user_id'] ?? null;
 
         if (!$event || !$email || !$doceboId) {
