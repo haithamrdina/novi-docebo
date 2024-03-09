@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
+use App\Http\Integrations\Docebo\Requests\UpdateUserStatusFromDocebo;
 use App\Http\Integrations\Novi\NoviConnector;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
 use Illuminate\Http\Request;
@@ -31,23 +32,20 @@ class WebHookController extends Controller
         }
 
         switch ($event) {
-            case 'customer.created':
-                $this->costumerCreated($entityUniqueId);
-                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
-                break;
             case 'customer.updated':
                 $this->costumerUpdated($entityUniqueId);
                 Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Updated successfully in doecebo');
                 break;
             case 'customer.removed':
-
-
+                $this->costumerCreated($entityUniqueId);
+                Log::info('[ '. $event .' ]: Entity Unique ID: ' . $entityUniqueId . ' Archived successfully in doecebo');
+                break;
             default:
                 break;
         }
 
         return response()->json(['status' => 'success']);
-   }
+    }
 
    public function costumerUpdated($entityUniqueId){
         $noviConnector = new NoviConnector;
@@ -63,7 +61,7 @@ class WebHookController extends Controller
         }
    }
 
-   public function costumerCreated($entityUniqueId){
+   public function costumerRemoved($entityUniqueId){
         $noviConnector = new NoviConnector;
         $doceboConnector =  new DoceboConnector;
 
@@ -73,11 +71,8 @@ class WebHookController extends Controller
         $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
         $doceboUserData = $doceboUserDataResponse->dto();
         if($doceboUserData){
-            $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
+            $doceboConnector->send(new UpdateUserStatusFromDocebo($doceboUserData));
         }
-   }
-
-   public function costumerRemoved($entityUniqueId){
 
    }
 }
