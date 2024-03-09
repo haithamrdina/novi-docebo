@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/listener-novi-update'
+        '/novi-listener'
     ];
 }
