@@ -54,12 +54,12 @@ class WebHookController extends Controller
         $doceboConnector =  new DoceboConnector;
 
         $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
-        $noviUserdata = $memberDataResponse->dto();
+        $noviUserData = $memberDataResponse->dto();
 
-        $doceboUserData = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserdata['email']));
-
+        $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
+        $doceboUserData = $doceboUserDataResponse->dto();
         if($doceboUserData){
-            $doceboConnector->send(new UpdateUserFiledsData($doceboUserData['user_id'], $noviUserdata['details']));
+            $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
         }
    }
 
