@@ -35,12 +35,20 @@ class WebHookController extends Controller
 
         switch ($event) {
             case 'customer.updated':
-                $this->costumerUpdated($entityUniqueId);
-                Log::info('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
+                $result = $this->costumerUpdated($entityUniqueId);
+                if($result){
+                    Log::info('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
+                }else{
+                    Log::error('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Unexpected error on Update');
+                }
                 break;
             case 'customer.removed':
-                $this->costumerRemoved($entityUniqueId);
-                Log::info('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Archived successfully in docebo');
+                $result = $this->costumerRemoved($entityUniqueId);
+                if($result){
+                    Log::info('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Archived successfully in docebo');
+                }else{
+                    Log::error('["NOVI AMS"][ '. $event .' ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Unexpected error on Archive');
+                }
                 break;
             default:
                 break;
@@ -57,9 +65,14 @@ class WebHookController extends Controller
 
         $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
         $doceboUserData = $doceboUserDataResponse->dto();
+
+        $result = false;
         if($doceboUserData){
             $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
+            $result= true;
         }
+
+        return $result;
     }
 
     public function costumerRemoved($entityUniqueId){
@@ -71,9 +84,13 @@ class WebHookController extends Controller
 
         $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
         $doceboUserData = $doceboUserDataResponse->dto();
+        $result = false;
         if($doceboUserData){
             $doceboConnector->send(new UpdateUserStatusFromDocebo($doceboUserData));
+            $result = true;
         }
+
+        return $result;
     }
 
 
@@ -97,19 +114,29 @@ class WebHookController extends Controller
         }
 
         if($event == "user.created"){
-            $this->userCreated($email, $doceboId);
-            Log::info('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Updated successfully in docebo');
+            $result = $this->userCreated($email, $doceboId);
+            if($result){
+                Log::info('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Updated successfully in docebo');
+            }else{
+                Log::error('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Unexpected error');
+            }
         }
         return response()->json(['status' => 'success']);
     }
 
     public function userCreated($email, $doceboId){
 
+        $result = false;
         $doceboConnector =  new DoceboConnector;
         $noviConnector = new NoviConnector;
         $noviUsersDataResponse = $noviConnector->send(new GetUsersDataFromNovi($email));
         $noviUserData = $noviUsersDataResponse->dto();
-        $doceboConnector->send(new UpdateUserFiledsData($doceboId, $noviUserData));
+        if($noviUserData){
+            $doceboConnector->send(new UpdateUserFiledsData($doceboId, $noviUserData));
+            $result = true;
+        }
+
+        return $result;
     }
 
 }
