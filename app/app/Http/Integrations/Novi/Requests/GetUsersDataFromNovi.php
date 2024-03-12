@@ -35,10 +35,11 @@ class GetUsersDataFromNovi extends Request implements Paginatable
     public function createDtoFromResponse(Response $response): mixed
     {
         $userFields = config('userfields');
-        $response = $response->json('Results')[0];
+        $item = $response->json('Results');
 
         $details = null;
-        if(!empty($reponse)){
+        if(!empty($item[0])){
+            $response = $item[0];
             foreach ($userFields as $key => $value1) {
                 // Vérifie si la clé existe directement dans la réponse
                 if (array_key_exists($value1, $response)) {
