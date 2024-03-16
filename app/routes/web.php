@@ -9,6 +9,7 @@ use App\Http\Integrations\Docebo\Requests\GetUsersData;
 use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
+use App\Http\Integrations\Novi\Requests\AddNewMember;
 use App\Http\Integrations\Novi\Requests\GetMemberCustomFiels;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
@@ -60,6 +61,21 @@ Route::get('/test', function () {
 });
 Route::get('check-docebo-user', function(){
     $noviConnector = new NoviConnector;
+    $doceboUserData = [
+        "ParentCustomerUniqueID" => "27b54a9b-e37b-453d-bcbb-47286084487e",
+        'Name' => 'test002 test002',
+        "FirstName" => 'test 002',
+        "LastName" =>'test 002',
+        "Active" => true,
+        "Email" => 'test002@iltcloud.com',
+        "OriginalJoinDate" => new \DateTime(),
+        "MemberSince" => new \DateTime(),
+        "Approved" => true,
+        "CustomerType" => "Person"
+    ];
+    $usernovi = $noviConnector->send(new AddNewMember($doceboUserData));
+    dd($usernovi->json());
+
     $noviUsersSimpleDataResponse = $noviConnector->send(new GetUsersDataFromNovi('ayoub.haouari@gmail.com'));
     $noviUsers = $noviUsersSimpleDataResponse->dto();
     dd($noviUsers);
