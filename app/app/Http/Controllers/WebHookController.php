@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Integrations\Docebo\DoceboConnector;
+use App\Http\Integrations\Docebo\Requests\GetUsersData;
 use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Docebo\Requests\UpdateUserStatusFromDocebo;
 use App\Http\Integrations\Novi\NoviConnector;
+use App\Http\Integrations\Novi\Requests\AddNewMember;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersSimpleDataFromNovi;
@@ -114,7 +116,7 @@ class WebHookController extends Controller
         }
 
         if($event == "user.created"){
-            $result = $this->userCreated($email, $doceboId);
+            $result = $this->userCreated($email);
             if($result){
                 Log::info('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Updated successfully in docebo');
             }else{
@@ -124,18 +126,17 @@ class WebHookController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-    public function userCreated($email, $doceboId){
+    public function userCreated($email){
 
         $result = false;
         $doceboConnector =  new DoceboConnector;
         $noviConnector = new NoviConnector;
-        $noviUsersDataResponse = $noviConnector->send(new GetUsersDataFromNovi($email));
-        $noviUserData = $noviUsersDataResponse->dto();
-        if($noviUserData){
-            $doceboConnector->send(new UpdateUserFiledsData($doceboId, $noviUserData));
+        $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData($email));
+        $doceboUserData = $doceboUsersDataResponse->dto();
+        if($doceboUserData){
+            $noviConnector->send(new AddNewMember($doceboUserData));
             $result = true;
         }
-
         return $result;
     }
 
