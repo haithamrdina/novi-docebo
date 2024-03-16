@@ -118,7 +118,7 @@ class WebHookController extends Controller
         if($event == "user.created"){
             $result = $this->userCreated($email);
             if($result){
-                Log::info('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Updated successfully in docebo');
+                Log::info('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Added successfully in Novi');
             }else{
                 Log::error('["DOCEBO LMS"][ '. $event .' ]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Unexpected error');
             }
