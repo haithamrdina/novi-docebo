@@ -10,8 +10,6 @@ use App\Http\Integrations\Docebo\Requests\UpdateUserStatusFromDocebo;
 use App\Http\Integrations\Novi\NoviConnector;
 use App\Http\Integrations\Novi\Requests\AddNewMember;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
-use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
-use App\Http\Integrations\Novi\Requests\GetUsersSimpleDataFromNovi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -135,6 +133,7 @@ class WebHookController extends Controller
         $doceboUserData = $doceboUsersDataResponse->dto();
         if($doceboUserData){
             $noviConnector->send(new AddNewMember($doceboUserData));
+
             $result = true;
         }
         return $result;

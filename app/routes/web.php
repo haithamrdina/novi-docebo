@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WebHookController;
 use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
+use App\Http\Integrations\Docebo\Requests\GetUsersData;
 use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
@@ -39,6 +40,10 @@ Route::get('novi-users' , function(){
 });
 Route::get('/test', function () {
     $doceboConnector = new DoceboConnector();
+    $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData('ayoub.haouari@gmail.com'));
+        $doceboUserData = $doceboUsersDataResponse->dto();
+        dd($doceboUserData);
+
     $result = ($doceboConnector->send(new GetUserfiels))->dto();
     $configFilePath = config_path('userfields.php');
     $configContent = '<?php' . PHP_EOL . 'return [' . PHP_EOL;

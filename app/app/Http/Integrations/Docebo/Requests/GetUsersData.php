@@ -39,12 +39,12 @@ class GetUsersData extends Request implements Paginatable
         if(!empty($item)){
             $data = [
                 'Name' => $item[0]['fullname'],
-                "FirstName" => $item[0]['fullname'],
-                "LastName" => $item[0]['fullname'],
+                "FirstName" => $item[0]['first_name'],
+                "LastName" => $item[0]['last_name'],
                 "Active" => true,
-                "Email" => $item[0]['fullname'],
-                "OriginalJoinDate" => (new \DateTime($item[0]['fullname']))->format('d/m/Y'),
-                "MemberSince" => (new \DateTime($item[0]['fullname']))->format('d/m/Y'),
+                "Email" => $item[0]['email'],
+                "OriginalJoinDate" => (new \DateTime($item[0]['creation_date']))->format('d/m/Y'),
+                "MemberSince" => (new \DateTime($item[0]['creation_date']))->format('d/m/Y'),
                 "Approved" => true,
             ];
         }
