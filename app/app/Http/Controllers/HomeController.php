@@ -30,13 +30,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $doceboConnector = new DoceboConnector();
+        /*$doceboConnector = new DoceboConnector();
         $doceboUsersPaginator = $doceboConnector->paginate(new GetUsersDataFromDocebo);
         $doceboUsers = [];
         foreach($doceboUsersPaginator as $pg){
             $data = $pg->dto();
             $doceboUsers = array_merge($doceboUsers, $data);
-        }
+        }*/
+        $doceboUsers = null;
         return view('home', compact('doceboUsers'));
     }
 

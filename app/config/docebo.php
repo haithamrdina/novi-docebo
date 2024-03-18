@@ -1,6 +1,6 @@
 <?php
 return [
     'endpoint' => "https://aaidsandbox.docebosaas.com",
-    'username' => "ayoub.haouari@gmail.com",
-    'password' => "EXTAAID123!",
+    'username' => "ayoub.houari@gmail.com",
+    'password' => "INTAAID123!",
 ];
