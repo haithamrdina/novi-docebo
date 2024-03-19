@@ -99,7 +99,11 @@ class ConfigController extends Controller
             "UseParentBilling",
             "UseParentShipping",
             "VolunteerWorks",
-            "Website"
+            "Website",
+            "CustomerType",
+            'UniqueID',
+            'OpenDuesBalance',
+
         ];
         $noviMemberfieldsResponse = $noviConnector->send(new GetMemberCustomFiels);
         $noviMemberFields = array_merge($noviMemberFields , $noviMemberfieldsResponse->dto());

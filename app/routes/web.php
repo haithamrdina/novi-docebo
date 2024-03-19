@@ -41,10 +41,6 @@ Route::get('novi-users' , function(){
 });
 Route::get('/test', function () {
     $doceboConnector = new DoceboConnector();
-    $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData('ayoub.haouari@gmail.com'));
-        $doceboUserData = $doceboUsersDataResponse->dto();
-        dd($doceboUserData);
-
     $result = ($doceboConnector->send(new GetUserfiels))->dto();
     $configFilePath = config_path('userfields.php');
     $configContent = '<?php' . PHP_EOL . 'return [' . PHP_EOL;
@@ -92,10 +88,10 @@ Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler'
 require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () {
 
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    /*Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/home/verify', [HomeController::class, 'verify'])->name('home.verify');
     Route::get('/home/sync', [HomeController::class, 'sync'])->name('home.sync');
-    Route::get('/home/empty', [HomeController::class, 'empty'])->name('home.empty');
+    Route::get('/home/empty', [HomeController::class, 'empty'])->name('home.empty');*/
     Route::prefix('settings')->name('settings.')->group(function(){
         Route::get('userfields', [ConfigController::class, 'index'])->name('index');
         Route::post('userfields', [ConfigController::class, 'update'])->name('update');

@@ -1,4 +1,4 @@
-<li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+{{--<li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('home') }}">
         <span class="nav-link-icon d-md-none d-lg-inline-block">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
@@ -13,7 +13,7 @@
             Home
         </span>
     </a>
-</li>
+</li>--}}
 <li class="nav-item {{ request()->routeIs('settings.*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('settings.index') }}">
         <span class="nav-link-icon d-md-none d-lg-inline-block">
