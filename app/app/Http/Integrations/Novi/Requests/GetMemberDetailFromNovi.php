@@ -28,9 +28,8 @@ class GetMemberDetailFromNovi extends Request
     {
         $userFields = config('userfields');
         $response = $response->json();
-
         $details = [];
-
+        $openDueBalance = $response['OpenDuesBalance'];
         foreach ($userFields as $key => $value1) {
             // Vérifie si la clé existe directement dans la réponse
             if (array_key_exists($value1, $response)) {
@@ -47,7 +46,7 @@ class GetMemberDetailFromNovi extends Request
         }
         foreach ($details as $key => &$value) {
             // Check if the key exists in the config array
-            if (array_key_exists($key, $userFields)) {
+           if (array_key_exists($key, $userFields)) {
                 // If the value is null, empty, or an empty array, set it to an empty string
                 if (empty($value) || $value === "" || (is_array($value) and empty($value))) {
                     $value = "";
@@ -62,6 +61,11 @@ class GetMemberDetailFromNovi extends Request
                 }
             }
 
+            if ($userFields[$key] === 'OpenDuesBalance') {
+                $value = strval($openDueBalance);
+            }
+
+
             // Modify the value of the "Gender" key
             if ($userFields[$key] === 'Gender') {
                 $value = ($value === 'Male') ? 9 : (($value === 'Prefer Not to Answer') ? 11 : null);
@@ -72,9 +76,6 @@ class GetMemberDetailFromNovi extends Request
             }
             if ($userFields[$key] === 'MemberStatus') {
                 $value = ($value === 'non_member') ? 9 : null;
-            }
-            if ($userFields[$key] === 'OpenDuesBalance') {
-                $value = strval($value);
             }
         }
         unset($value);

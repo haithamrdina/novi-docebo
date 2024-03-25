@@ -24,4 +24,5 @@ return [
     '46' => 'MemberType',
     '47' => 'UniqueID',
     '49' => 'MemberStatus',
+    '50' => 'OpenDuesBalance',
 ];

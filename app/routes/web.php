@@ -57,22 +57,8 @@ Route::get('/test', function () {
 });
 Route::get('check-docebo-user', function(){
     $noviConnector = new NoviConnector;
-    $doceboUserData = [
-        "ParentCustomerUniqueID" => "27b54a9b-e37b-453d-bcbb-47286084487e",
-        'Name' => 'test002 test002',
-        "FirstName" => 'test 002',
-        "LastName" =>'test 002',
-        "Active" => true,
-        "Email" => 'test002@iltcloud.com',
-        "OriginalJoinDate" => new \DateTime(),
-        "MemberSince" => new \DateTime(),
-        "Approved" => true,
-        "CustomerType" => "Person"
-    ];
-    $usernovi = $noviConnector->send(new AddNewMember($doceboUserData));
-    dd($usernovi->json());
 
-    $noviUsersSimpleDataResponse = $noviConnector->send(new GetUsersDataFromNovi('ayoub.haouari@gmail.com'));
+    $noviUsersSimpleDataResponse = $noviConnector->send(new GetMemberDetailFromNovi('a1a267fb-5247-41d8-b1ab-35c7db139bf9'));
     $noviUsers = $noviUsersSimpleDataResponse->dto();
     dd($noviUsers);
 });
