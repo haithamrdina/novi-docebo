@@ -68,7 +68,7 @@ class GetMemberDetailFromNovi extends Request
                 $value = ($value === 'Male') ? 9 : (($value === 'Prefer Not to Answer') ? 11 : null);
             }
 
-            if ($userFields[$key] === 'isPerson') {
+            if ($userFields[$key] === 'CustomerType') {
                 // Check if the value is 'Male' or 'Prefer Not to Answer' and assign 9 or 11 accordingly
                 $value = ($value === 'Person') ? 7 : 8;
             }
