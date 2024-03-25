@@ -67,6 +67,15 @@ class GetMemberDetailFromNovi extends Request
                 // Check if the value is 'Male' or 'Prefer Not to Answer' and assign 9 or 11 accordingly
                 $value = ($value === 'Male') ? 9 : (($value === 'Prefer Not to Answer') ? 11 : null);
             }
+
+            if ($userFields[$key] === 'isPerson') {
+                // Check if the value is 'Male' or 'Prefer Not to Answer' and assign 9 or 11 accordingly
+                $value = ($value === 'Person') ? 7 : 8;
+            }
+            if ($userFields[$key] === 'MemberStatus') {
+                // Check if the value is 'Male' or 'Prefer Not to Answer' and assign 9 or 11 accordingly
+                $value = ($value === 'non_member') ? 9 : null;
+            }
         }
         unset($value);
 
