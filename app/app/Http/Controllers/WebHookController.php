@@ -63,16 +63,22 @@ class WebHookController extends Controller
         $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
         $noviUserData = $memberDataResponse->dto();
 
-        $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
-        $doceboUserData = $doceboUserDataResponse->dto();
+        if($noviUserData['email']){
+            $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
+            $doceboUserData = $doceboUserDataResponse->dto();
 
-        $result = false;
-        if($doceboUserData){
-            $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
-            $result= true;
+            $result = false;
+            if($doceboUserData){
+                $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
+                $result= true;
+            }else{
+                Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'Not found in docebo');
+            }
+
+            return $result;
+        }else{
+            Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'Email not found in NOVI AMS');
         }
-
-        return $result;
     }
 
     public function costumerRemoved($entityUniqueId){

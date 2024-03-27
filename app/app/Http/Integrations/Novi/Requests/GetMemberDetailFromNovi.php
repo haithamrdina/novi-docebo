@@ -30,6 +30,7 @@ class GetMemberDetailFromNovi extends Request
         $response = $response->json();
         $details = [];
         $openDueBalance = $response['OpenDuesBalance'];
+        $email = $response['Email'];
         foreach ($userFields as $key => $value1) {
             // Vérifie si la clé existe directement dans la réponse
             if (array_key_exists($value1, $response)) {
@@ -81,7 +82,7 @@ class GetMemberDetailFromNovi extends Request
         unset($value);
 
         return [
-            'email' => $response['Email'],
+            'email' => $email,
             'details' => $details
         ];
     }
