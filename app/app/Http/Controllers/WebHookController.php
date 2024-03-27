@@ -72,12 +72,12 @@ class WebHookController extends Controller
                 $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
                 $result= true;
             }else{
-                Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'Not found in docebo');
+                Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Not found in docebo');
             }
 
             return $result;
         }else{
-            Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'Email not found in NOVI AMS');
+            Log::error('["NOVI AMS"][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Email not found in NOVI AMS');
         }
     }
 
