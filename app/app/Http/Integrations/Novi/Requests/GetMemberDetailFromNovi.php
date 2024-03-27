@@ -63,7 +63,7 @@ class GetMemberDetailFromNovi extends Request
             }
 
             if ($userFields[$key] === 'OpenDuesBalance') {
-                $value = strval($openDueBalance);
+                $value = strval($openDueBalance) == "0" ? "0.00" : strval($openDueBalance);
             }
 
 
