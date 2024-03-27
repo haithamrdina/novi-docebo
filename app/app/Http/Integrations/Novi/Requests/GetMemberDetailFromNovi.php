@@ -76,7 +76,7 @@ class GetMemberDetailFromNovi extends Request
                 $value = ($value === 'Person') ? 7 : 8;
             }
             if ($userFields[$key] === 'MemberStatus') {
-                $value = ($value === 'non_member') ? 9 : null;
+                $value = ($value === 'current') ? 9 : null;
             }
         }
         unset($value);
