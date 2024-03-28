@@ -83,7 +83,27 @@ class WebhookDoceboController extends Controller
            $noviUserUniqueIdResponse = $noviConnector->send(new GetUsersEntityUniqueId($doceboUsernameData));
            $noviUserUniqueIdData = $noviUserUniqueIdResponse->dto();
            if($noviUserUniqueIdData){
-                $noviConnector->send(new UpdateBillingAndShippingAddress($noviUserUniqueIdData, $transactionAddressData));
+                $addressData = [
+                    "Name" => $noviUserUniqueIdData['name'],
+                    "CustomerType" => "Person",
+                    "BillingAddress" => [
+                        "Address1" => $transactionAddressData['Address1'],
+                        "Address2" =>  $transactionAddressData['Address2'],
+                        "City" => $transactionAddressData['City'],
+                        "ZipCode" =>  $transactionAddressData['ZipCode'],
+                        "StateProvince" =>  $transactionAddressData['StateProvince'],
+                        "Country" =>  $transactionAddressData['Country']
+                    ],
+                    "BillingAddress" => [
+                        "Address1" => $transactionAddressData['Address1'],
+                        "Address2" =>  $transactionAddressData['Address2'],
+                        "City" => $transactionAddressData['City'],
+                        "ZipCode" =>  $transactionAddressData['ZipCode'],
+                        "StateProvince" =>  $transactionAddressData['StateProvince'],
+                        "Country" =>  $transactionAddressData['Country']
+                    ]
+                ];
+                $noviConnector->send(new UpdateBillingAndShippingAddress($noviUserUniqueIdData['unique_id'], $addressData));
                 Log::info('["DOCEBO LMS"][ecommerce.transaction.created]: Entity DOCEBO Unique ID: ' . $doceboId . ' and Transaction Unique ID : ' . $transaction_id . '  Updated successffully on NOVI');
                 return response()->json(['status' => 'success'] , 200);
            }else{

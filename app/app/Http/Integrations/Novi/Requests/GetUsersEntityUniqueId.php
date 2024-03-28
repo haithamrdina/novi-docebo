@@ -38,7 +38,10 @@ class GetUsersEntityUniqueId extends Request implements Paginatable
 
         $details = null;
         if(!empty($item[0])){
-            $details = $item[0]['UniqueID'];
+            $details = [
+                'unique_id' => $item[0]['UniqueID'],
+                'name' => $item[0]['Name']
+            ];
         }
         return $details;
     }

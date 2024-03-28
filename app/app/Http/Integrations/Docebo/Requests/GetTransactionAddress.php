@@ -37,23 +37,12 @@ class GetTransactionAddress extends Request
         $data = null;
         if(!empty($item)){
             $data = [
-                "BillingAddress" => [
-                    "Address1" => $item['address'],
-                    "Address2" => null,
-                    "City" => $item['city'],
-                    "ZipCode" => $item['zip'],
-                    "StateProvince" => $item['state'],
-                    "Country" => $item['country']
-                ],
-                "ShippingAddress" => [
-                    "Address1" => $item['address'],
-                    "Address2" => null,
-                    "City" => $item['city'],
-                    "ZipCode" => $item['zip'],
-                    "StateProvince" => $item['state'],
-                    "Country" => $item['country']
-                ],
-                "CustomerType" => "Person",
+                "Address1" => $item['address'],
+                "Address2" => null,
+                "City" => $item['city'],
+                "ZipCode" => $item['zip'],
+                "StateProvince" => $item['state'],
+                "Country" => $item['country']
             ];
         }
         return $data;
