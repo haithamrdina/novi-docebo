@@ -14,17 +14,7 @@ class WebHookNoviController extends Controller
     */
     public function noviUpdateHandle(Request $request)
     {
-        $configFilePath = config_path('webhook.php');
-        $configContent = '<?php' . PHP_EOL . 'return [' . PHP_EOL;
-
-        $configContent .= "    'test' => null, //test" . PHP_EOL;
-
-        $configContent .= '];' . PHP_EOL;
-
-        // Écrire dans le fichier de configuration
-        File::put($configFilePath, $configContent);
-        $payload = $request->getContent();
-        Log::info('Webhook Payload: ' . $payload);
+        Log::info('Webhook Payload: ');
         return response()->json(['status' => 'success']);
     }
 }
