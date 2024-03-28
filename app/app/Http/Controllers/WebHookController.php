@@ -151,9 +151,7 @@ class WebHookController extends Controller
     * @return json
     */
     public function webhookNoviUpdateHandler(Request $request){
-
-        // Log the incoming payload
-        Log::info('Webhook Payload:', $request->all());
+        Log::channel('novi')->info('Webhook Payload:', $request->all());
         // Respond with a 200 OK status to acknowledge receipt of the webhook
         return response()->json(['message' => 'Webhook received'], 200);
         /*

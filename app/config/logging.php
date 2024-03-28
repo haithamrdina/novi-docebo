@@ -54,8 +54,14 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'novi'],
             'ignore_exceptions' => false,
+        ],
+
+        'novi' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/novi.log'),
+            'level' => 'debug',
         ],
 
         'single' => [
