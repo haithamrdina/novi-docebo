@@ -28,7 +28,7 @@ class GetUsersDataFromNovi extends Request implements Paginatable
     protected function defaultQuery(): array
     {
         return [
-            'email' => $this->email
+            'accountEmail' => $this->email
         ];
     }
 
