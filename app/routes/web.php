@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\WebHookController;
+use App\Http\Controllers\WebhookDoceboController;
 use App\Http\Controllers\WebHookNoviController;
 use App\Http\Integrations\Docebo\DoceboConnector;
+use App\Http\Integrations\Docebo\Requests\GetUserDataByUserId;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
@@ -55,6 +57,7 @@ Route::get('check-docebo-user', function(){
     $noviUsers = $noviUsersSimpleDataResponse->dto();
     dd($noviUsers);
 });
+
 /** tests @e */
 
 /** webhooks @s */
@@ -62,7 +65,8 @@ Route::get('check-docebo-user', function(){
 Route::post('novi-update-listener', [WebHookNoviController::class, 'noviUpdateHandle']);
 Route::post('novi-remove-listener', [WebHookNoviController::class, 'noviRemoveHandle']);
 Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler']);
-
+Route::post('docebo-create-listener', [WebhookDoceboController::class, 'doceboCreateHandle']);
+Route::post('docebo-transation-listener', [WebhookDoceboController::class, 'doceboTransactionHandle']);
 /** webhooks @e */
 
 /** app @s */
