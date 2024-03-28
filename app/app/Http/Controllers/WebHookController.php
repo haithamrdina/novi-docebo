@@ -182,11 +182,11 @@ class WebHookController extends Controller
                 $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
                 Log::info('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
             }else{
-                Log::warning('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email not found on DOCEBO');
+                Log::info('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email not found on DOCEBO');
             }
 
         }else{
-            Log::warning('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email is empty on NOVI AMS');
+            Log::info('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email is empty on NOVI AMS');
         }
 
         return response()->json(['status' => 'success'] , 200);
