@@ -152,9 +152,11 @@ class WebHookController extends Controller
     */
     public function webhookNoviUpdateHandler(Request $request){
 
-        $noviConnector = new NoviConnector;
-        $doceboConnector =  new DoceboConnector;
-
+        // Log the incoming payload
+        Log::info('Webhook Payload:', $request->all());
+        // Respond with a 200 OK status to acknowledge receipt of the webhook
+        return response()->json(['message' => 'Webhook received'], 200);
+        /*
         // verify payload data
         $payload = json_decode($request->getContent(), true);
 
@@ -169,6 +171,8 @@ class WebHookController extends Controller
             return response()->json(['error' => 'Missing required fields'], 400);
         }
 
+        $noviConnector = new NoviConnector;
+        $doceboConnector =  new DoceboConnector;
         // verify memberDetail From Novi
         $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
         $noviUserData = $memberDataResponse->dto();
@@ -189,7 +193,7 @@ class WebHookController extends Controller
             Log::info('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email is empty on NOVI AMS');
         }
 
-        return response()->json(['status' => 'success'] , 200);
+        return response()->json(['status' => 'success'] , 200);*/
     }
 
 }
