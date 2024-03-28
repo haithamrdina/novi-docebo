@@ -33,25 +33,25 @@ class GetTransactionAddress extends Request
 
     public function createDtoFromResponse(Response $response): mixed
     {
-        $item = $response->json('data.date_completed');
+        $item = $response->json('data.billing_data');
         $data = null;
         if(!empty($item)){
             $data = [
                 "BillingAddress" => [
-                    "Address1" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['address'],
+                    "Address1" => $item['address'],
                     "Address2" => null,
-                    "City" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['city'],
-                    "ZipCode" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['zip'],
-                    "StateProvince" => null,
-                    "Country" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['country']
+                    "City" => $item['city'],
+                    "ZipCode" => $item['zip'],
+                    "StateProvince" => $item['state'],
+                    "Country" => $item['country']
                 ],
                 "ShippingAddress" => [
-                    "Address1" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['address'],
+                    "Address1" => $item['address'],
                     "Address2" => null,
-                    "City" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['city'],
-                    "ZipCode" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['zip'],
-                    "StateProvince" => null,
-                    "Country" => $item[0]['buyer_data']['enrolled_user']['gateway_information']['billing_data']['country']
+                    "City" => $item['city'],
+                    "ZipCode" => $item['zip'],
+                    "StateProvince" => $item['state'],
+                    "Country" => $item['country']
                 ],
                 "CustomerType" => "Person",
             ];

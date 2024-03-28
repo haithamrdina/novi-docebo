@@ -5,6 +5,7 @@ use App\Http\Controllers\WebHookController;
 use App\Http\Controllers\WebhookDoceboController;
 use App\Http\Controllers\WebHookNoviController;
 use App\Http\Integrations\Docebo\DoceboConnector;
+use App\Http\Integrations\Docebo\Requests\GetTransactionAddress;
 use App\Http\Integrations\Docebo\Requests\GetUserDataByUserId;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
@@ -23,6 +24,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('transaction', function(){
+    $doceboConnector = new DoceboConnector;
+    $result =$doceboConnector->send(new GetTransactionAddress(20))->dto();
+    dd($result);
+});
 
 /** webhooks @s */
 //Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);

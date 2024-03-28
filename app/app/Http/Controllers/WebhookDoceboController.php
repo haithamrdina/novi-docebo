@@ -95,7 +95,5 @@ class WebhookDoceboController extends Controller
             Log::warning('["DOCEBO LMS"][ecommerce.transaction.created]: Entity DOCEBO Unique ID: ' . $doceboId . ' and Transaction Unique ID : ' . $transaction_id . '  Unexpected error');
             return response()->json(['status' => 'success'] , 200);
         }
-
-
     }
 }
