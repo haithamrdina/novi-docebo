@@ -188,6 +188,8 @@ class WebHookController extends Controller
         }else{
             Log::warning('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email is empty on NOVI AMS');
         }
+
+        return response()->json(['status' => 'success'] , 200);
     }
 
 }
