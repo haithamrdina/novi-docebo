@@ -196,14 +196,7 @@ class WebHookController extends Controller
 
     public function noviUpdateHandle(Request $request)
     {
-        // Get the request body
-        $payload = $request->getContent();
-
-        // Process the payload
-        // Example: Log the payload
-        Log::info('Webhook Payload: ' . $payload);
-
-        // Return a response (optional)
+        Log::info('Webhook Payload: ');
         return response()->json(['status' => 'success']);
     }
 
