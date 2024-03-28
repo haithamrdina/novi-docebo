@@ -145,4 +145,49 @@ class WebHookController extends Controller
         return $result;
     }
 
+
+     /**
+    * @param Request $request
+    * @return json
+    */
+    public function webhookNoviUpdateHandler(Request $request){
+
+        $noviConnector = new NoviConnector;
+        $doceboConnector =  new DoceboConnector;
+
+        // verify payload data
+        $payload = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(['error' => 'Invalid JSON payload'], 400);
+        }
+
+        $event = $payload['event'] ?? null;
+        $entityUniqueId = $payload['entityUniqueId'] ?? null;
+
+        if (!$event || !$entityUniqueId) {
+            return response()->json(['error' => 'Missing required fields'], 400);
+        }
+
+        // verify memberDetail From Novi
+        $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
+        $noviUserData = $memberDataResponse->dto();
+
+        if($noviUserData['email']){
+
+            $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
+            $doceboUserData = $doceboUserDataResponse->dto();
+
+            if($doceboUserData){
+                $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
+                Log::info('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
+            }else{
+                Log::warning('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email not found on DOCEBO');
+            }
+
+        }else{
+            Log::warning('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . 'The Email is empty on NOVI AMS');
+        }
+    }
+
 }

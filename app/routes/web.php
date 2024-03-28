@@ -66,6 +66,7 @@ Route::get('check-docebo-user', function(){
 
 /** webhooks @s */
 Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
+Route::post('novi-update-listener', [WebHookController::class, 'webhookNoviUpdateHandler']);
 Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler']);
 
 /** webhooks @e */
