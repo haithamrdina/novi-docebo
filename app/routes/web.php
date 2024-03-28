@@ -1,21 +1,14 @@
 <?php
 
 use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WebHookController;
+use App\Http\Controllers\WebHookNoviController;
 use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetUserfiels;
-use App\Http\Integrations\Docebo\Requests\GetUsersData;
-use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
-use App\Http\Integrations\Novi\Requests\AddNewMember;
-use App\Http\Integrations\Novi\Requests\GetMemberCustomFiels;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
-use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
-use App\Http\Integrations\Novi\Requests\GetUsersSimpleDataFromNovi;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,10 +58,9 @@ Route::get('check-docebo-user', function(){
 /** tests @e */
 
 /** webhooks @s */
-Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
-Route::post('novi-update-listener', [WebHookController::class, 'webhookNoviUpdateHandler']);
+//Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
+Route::post('novi-update-listener', [WebHookNoviController::class, 'noviUpdateHandle']);
 Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler']);
-//Route::post('novi-updated', [WebHookController::class, 'noviUpdateHandle']);
 
 /** webhooks @e */
 
