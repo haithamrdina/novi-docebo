@@ -24,42 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/** tests @s */
-Route::get('novi-users' , function(){
-    $doceboConnector = new DoceboConnector();
-    $userId = '13081';
-    $data = [
-        '1' => "(418)478-5418"
-    ];
-    $result = ($doceboConnector->send(new UpdateUserFiledsData($userId, $data)));
-    dd($result->dto());
-});
-Route::get('/test', function () {
-    $doceboConnector = new DoceboConnector();
-    $result = ($doceboConnector->send(new GetUserfiels))->dto();
-    $configFilePath = config_path('userfields.php');
-    $configContent = '<?php' . PHP_EOL . 'return [' . PHP_EOL;
-
-    foreach ($result as $key => $value) {
-        // Écrire chaque clé avec une valeur nulle
-        $configContent .= "    '$key' => null, //$value" . PHP_EOL;
-    }
-    $configContent .= '];' . PHP_EOL;
-
-    // Écrire dans le fichier de configuration
-    File::put($configFilePath, $configContent);
-    return view('welcome');
-});
-Route::get('check-docebo-user', function(){
-    $noviConnector = new NoviConnector;
-
-    $noviUsersSimpleDataResponse = $noviConnector->send(new GetMemberDetailFromNovi('a1a267fb-5247-41d8-b1ab-35c7db139bf9'));
-    $noviUsers = $noviUsersSimpleDataResponse->dto();
-    dd($noviUsers);
-});
-
-/** tests @e */
-
 /** webhooks @s */
 //Route::post('novi-listener', [WebHookController::class, 'webhookNoviHandler']);
 Route::post('novi-update-listener', [WebHookNoviController::class, 'noviUpdateHandle']);
