@@ -1,6 +1,6 @@
 <?php
 return [
-    'endpoint' => "https://www.implantinstitute.org",
+    'endpoint' => "https://aaidsandbox.docebosaas.com",
     'username' => "ayoub.houari@gmail.com",
     'password' => "INTAAID123!",
 ];
