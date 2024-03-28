@@ -20,7 +20,7 @@ class WebHookController extends Controller
     * @return json
     */
     public function webhookNoviHandler(Request $request){
-        $payload = json_decode($request->getContent(), true);
+        /*$payload = json_decode($request->getContent(), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             return response()->json(['error' => 'Invalid JSON payload'], 400);
@@ -52,7 +52,8 @@ class WebHookController extends Controller
                 break;
             default:
                 break;
-        }
+        }*/
+        Log::info('Webhook Payload: ');
         return response()->json(['status' => 'success']);
     }
 
@@ -189,6 +190,7 @@ class WebHookController extends Controller
         }
 
         return response()->json(['status' => 'success'] , 200);*/
+        Log::info('Webhook Payload: ');
     }
 
     public function noviUpdateHandle(Request $request)
