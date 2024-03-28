@@ -66,7 +66,7 @@ Route::post('novi-update-listener', [WebHookNoviController::class, 'noviUpdateHa
 Route::post('novi-remove-listener', [WebHookNoviController::class, 'noviRemoveHandle']);
 Route::post('docebo-listener', [WebHookController::class, 'webhookDoceboHandler']);
 Route::post('docebo-create-listener', [WebhookDoceboController::class, 'doceboCreateHandle']);
-Route::post('docebo-transation-listener', [WebhookDoceboController::class, 'doceboTransactionHandle']);
+Route::post('docebo-transaction-listener', [WebhookDoceboController::class, 'doceboTransactionHandle']);
 /** webhooks @e */
 
 /** app @s */
