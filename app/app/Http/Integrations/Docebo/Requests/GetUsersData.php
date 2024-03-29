@@ -45,6 +45,13 @@ class GetUsersData extends Request implements Paginatable
                 "Email" => $item[0]['email'],
                 "Approved" => true,
                 "CustomerType" => "Person",
+                "CustomFields" => [
+                    "User created by" => [
+                        "CustomerUniqueID" => "7a013cd3-a30a-4507-a887-5da26527f285",
+                        "Value" => "docebo",
+                        "IsSumOfChildren" => false
+                    ]
+                ]
             ];
         }
         return $data;
