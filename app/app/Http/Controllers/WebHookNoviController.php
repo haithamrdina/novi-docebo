@@ -40,6 +40,7 @@ class WebHookNoviController extends Controller
         $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
         $noviUserData = $memberDataResponse->dto();
 
+
         if($noviUserData['email']){
 
             $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
