@@ -43,6 +43,7 @@ class GetUsersData extends Request implements Paginatable
                 "LastName" => $item[0]['last_name'],
                 "Active" => true,
                 "Email" => $item[0]['email'],
+                "AccountEmail" =>  $item[0]['email'],
                 "Approved" => true,
                 "CustomerType" => "Person",
                 "CustomFields" => [
