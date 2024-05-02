@@ -14,7 +14,7 @@
                             <div class="card-body">
                                 <div class="text-center mb-4">
                                     <a href="{{ route('login') }}" class="navbar-brand navbar-brand-autodark">
-                                        <img src="{{ asset('static/logo/logo.webp')}}" height="150" alt="">
+                                        <img src="{{ asset('static/logo/logo.webp')}}" height="" alt="">
                                     </a>
                                 </div>
                                 <h2 class="h2 text-center mb-4">Login to your account</h2>
