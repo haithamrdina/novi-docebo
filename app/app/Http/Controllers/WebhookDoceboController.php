@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Log;
 class WebhookDoceboController extends Controller
 {
     /**
-    * @param Request $request
-    * @return json
-    */
+     * @param Request $request
+     * @return json
+     */
     public function doceboCreateHandle(Request $request)
     {
         $payload = json_decode($request->getContent(), true);
@@ -34,26 +34,26 @@ class WebhookDoceboController extends Controller
             return response()->json(['error' => 'Missing required fields'], 400);
         }
 
-        $doceboConnector =  new DoceboConnector;
+        $doceboConnector = new DoceboConnector;
         $noviConnector = new NoviConnector;
         $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData($username));
         $doceboUserData = $doceboUsersDataResponse->dto();
-        if($doceboUserData){
+        if ($doceboUserData) {
             $noviConnector->send(new AddNewMember($doceboUserData));
             Log::info('["DOCEBO LMS"][user.created]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Added successfully in Novi');
-            return response()->json(['status' => 'success'] , 200);
-        }else{
+            return response()->json(['status' => 'success'], 200);
+        } else {
             Log::warning('["DOCEBO LMS"][user.created]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Unexpected error');
-            return response()->json(['status' => 'success'] , 200);
+            return response()->json(['status' => 'success'], 200);
         }
 
     }
 
 
     /**
-    * @param Request $request
-    * @return json
-    */
+     * @param Request $request
+     * @return json
+     */
     public function doceboTransactionHandle(Request $request)
     {
         $payload = json_decode($request->getContent(), true);
@@ -69,7 +69,7 @@ class WebhookDoceboController extends Controller
             return response()->json(['error' => 'Missing required fields'], 400);
         }
 
-        $doceboConnector =  new DoceboConnector;
+        $doceboConnector = new DoceboConnector;
         $noviConnector = new NoviConnector;
 
         $transactionAddressResponse = $doceboConnector->send(new GetTransactionAddress($transaction_id));
@@ -78,11 +78,11 @@ class WebhookDoceboController extends Controller
         $doceboUsernameResponse = $doceboConnector->send(new GetUserDataByUserId($doceboId));
         $doceboUsernameData = $doceboUsernameResponse->dto();
 
-        if(!empty($transactionAddressData) && !empty($doceboUsernameData)){
+        if (!empty($transactionAddressData) && !empty($doceboUsernameData)) {
 
-           $noviUserUniqueIdResponse = $noviConnector->send(new GetUsersEntityUniqueId($doceboUsernameData));
-           $noviUserUniqueIdData = $noviUserUniqueIdResponse->dto();
-           if($noviUserUniqueIdData){
+            $noviUserUniqueIdResponse = $noviConnector->send(new GetUsersEntityUniqueId($doceboUsernameData));
+            $noviUserUniqueIdData = $noviUserUniqueIdResponse->dto();
+            if ($noviUserUniqueIdData) {
                 $addressData = [
                     'Name' => $noviUserUniqueIdData['Name'],
                     "AccountEmail" => $noviUserUniqueIdData['AccountEmail'],
@@ -156,32 +156,66 @@ class WebhookDoceboController extends Controller
                     "Website" => $noviUserUniqueIdData['Website'],
                     "BillingAddress" => [
                         "Address1" => $transactionAddressData['Address1'],
-                        "Address2" =>  $transactionAddressData['Address2'],
+                        "Address2" => $transactionAddressData['Address2'],
                         "City" => $transactionAddressData['City'],
-                        "ZipCode" =>  $transactionAddressData['ZipCode'],
-                        "StateProvince" =>  $transactionAddressData['StateProvince'],
-                        "Country" =>  $transactionAddressData['Country']
+                        "ZipCode" => $transactionAddressData['ZipCode'],
+                        "StateProvince" => $transactionAddressData['StateProvince'],
+                        "Country" => $transactionAddressData['Country']
                     ],
                     "ShippingAddress" => [
                         "Address1" => $transactionAddressData['Address1'],
-                        "Address2" =>  $transactionAddressData['Address2'],
+                        "Address2" => $transactionAddressData['Address2'],
                         "City" => $transactionAddressData['City'],
-                        "ZipCode" =>  $transactionAddressData['ZipCode'],
-                        "StateProvince" =>  $transactionAddressData['StateProvince'],
-                        "Country" =>  $transactionAddressData['Country']
+                        "ZipCode" => $transactionAddressData['ZipCode'],
+                        "StateProvince" => $transactionAddressData['StateProvince'],
+                        "Country" => $transactionAddressData['Country']
                     ]
                 ];
                 $noviConnector->send(new UpdateBillingAndShippingAddress($noviUserUniqueIdData['unique_id'], $addressData));
                 Log::info('["DOCEBO LMS"][ecommerce.transaction.created]: Entity DOCEBO Unique ID: ' . $doceboId . ' and Transaction Unique ID : ' . $transaction_id . '  Updated successffully on NOVI');
-                return response()->json(['status' => 'success'] , 200);
-           }else{
+                return response()->json(['status' => 'success'], 200);
+            } else {
                 Log::warning('["DOCEBO LMS"][ecommerce.transaction.created][NOVI AMS]: Entity DOCEBO Unique ID: ' . $doceboId . 'The Email not found on NOVI AMS');
-                return response()->json(['status' => 'success'] , 200);
-           }
+                return response()->json(['status' => 'success'], 200);
+            }
 
-        }else{
+        } else {
             Log::warning('["DOCEBO LMS"][ecommerce.transaction.created]: Entity DOCEBO Unique ID: ' . $doceboId . ' and Transaction Unique ID : ' . $transaction_id . '  Unexpected error');
-            return response()->json(['status' => 'success'] , 200);
+            return response()->json(['status' => 'success'], 200);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return json
+     */
+    public function doceboSelfregistredHandle(Request $request)
+    {
+        $payload = json_decode($request->getContent(), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(['error' => 'Invalid JSON payload'], 400);
+        }
+
+        $username = $payload['payload']['username'] ?? null;
+        $doceboId = $payload['payload']['user_id'] ?? null;
+
+        if (!$username || !$doceboId) {
+            return response()->json(['error' => 'Missing required fields'], 400);
+        }
+
+        $doceboConnector = new DoceboConnector;
+        $noviConnector = new NoviConnector;
+        $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData($username));
+        $doceboUserData = $doceboUsersDataResponse->dto();
+        if ($doceboUserData) {
+            $noviConnector->send(new AddNewMember($doceboUserData));
+            Log::info('["DOCEBO LMS"][user.selfregistred]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Added successfully in Novi');
+            return response()->json(['status' => 'success'], 200);
+        } else {
+            Log::warning('["DOCEBO LMS"][user.selfregistred]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Unexpected error');
+            return response()->json(['status' => 'success'], 200);
+        }
+
     }
 }
