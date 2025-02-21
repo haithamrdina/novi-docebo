@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Log;
 class WebHookNoviController extends Controller
 {
     /**
-    * @param Request $request
-    * @return json
-    */
+     * @param Request $request
+     * @return json
+     */
     public function noviUpdateHandle(Request $request)
     {
         // verify payload data
@@ -35,37 +35,37 @@ class WebHookNoviController extends Controller
         }
 
         $noviConnector = new NoviConnector;
-        $doceboConnector =  new DoceboConnector;
+        $doceboConnector = new DoceboConnector;
         // verify memberDetail From Novi
-        $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
+        $memberDataResponse = $noviConnector->send(new GetMemberDetailFromNovi($entityUniqueId));
         $noviUserData = $memberDataResponse->dto();
 
 
-        if($noviUserData['email']){
+        if ($noviUserData['email']) {
 
             $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
             $doceboUserData = $doceboUserDataResponse->dto();
 
-            if($doceboUserData){
+            if ($doceboUserData) {
                 $doceboConnector->send(new UpdateUserFiledsData($doceboUserData, $noviUserData['details']));
                 Log::info('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
-            }else{
+            } else {
                 Log::warning('["NOVI AMS"][DOCEBO LMS][customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' The Email not found on DOCEBO');
             }
 
-            return response()->json(['status' => 'success'] , 200);
-        }else{
+            return response()->json(['status' => 'success'], 200);
+        } else {
             Log::warning('["NOVI AMS"][NOVI AMS][ customer.updated ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' The Email is empty on NOVI AMS');
-            return response()->json(['status' => 'success'] , 200);
+            return response()->json(['status' => 'success'], 200);
         }
 
 
     }
 
-     /**
-    * @param Request $request
-    * @return json
-    */
+    /**
+     * @param Request $request
+     * @return json
+     */
     public function noviRemoveHandle(Request $request)
     {
         // verify payload data
@@ -83,27 +83,27 @@ class WebHookNoviController extends Controller
         }
 
         $noviConnector = new NoviConnector;
-        $doceboConnector =  new DoceboConnector;
+        $doceboConnector = new DoceboConnector;
         // verify memberDetail From Novi
-        $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($entityUniqueId));
+        $memberDataResponse = $noviConnector->send(new GetMemberDetailFromNovi($entityUniqueId));
         $noviUserData = $memberDataResponse->dto();
 
-        if($noviUserData['email']){
+        if ($noviUserData['email']) {
 
             $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($noviUserData['email']));
             $doceboUserData = $doceboUserDataResponse->dto();
 
-            if($doceboUserData){
+            if ($doceboUserData) {
                 $doceboConnector->send(new UpdateUserStatusFromDocebo($doceboUserData));
                 Log::info('["NOVI AMS"][DOCEBO LMS][customer.removed ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' Updated successfully in docebo');
-            }else{
+            } else {
                 Log::warning('["NOVI AMS"][DOCEBO LMS][customer.removed ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' The Email not found on DOCEBO');
             }
 
-            return response()->json(['status' => 'success'] , 200);
-        }else{
+            return response()->json(['status' => 'success'], 200);
+        } else {
             Log::warning('["NOVI AMS"][NOVI AMS][ customer.removed ]: Entity NOVI Unique ID: ' . $entityUniqueId . ' The Email is empty on NOVI AMS');
-            return response()->json(['status' => 'success'] , 200);
+            return response()->json(['status' => 'success'], 200);
         }
 
 

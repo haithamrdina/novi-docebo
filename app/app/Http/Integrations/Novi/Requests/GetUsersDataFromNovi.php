@@ -16,7 +16,8 @@ class GetUsersDataFromNovi extends Request implements Paginatable
 
     public function __construct(
         protected string $email,
-    ) { }
+    ) {
+    }
     /**
      * The endpoint for the request
      */
@@ -38,8 +39,14 @@ class GetUsersDataFromNovi extends Request implements Paginatable
         $item = $response->json('Results');
 
         $details = null;
-        if(!empty($item[0])){
+        $email = null;
+        $openDueBalance = null;
+
+        if (!empty($item[0])) {
             $response = $item[0];
+            $openDueBalance = $response['OpenDuesBalance'];
+            $email = $response['AccountEmail'];
+
             foreach ($userFields as $key => $value1) {
                 // Vérifie si la clé existe directement dans la réponse
                 if (array_key_exists($value1, $response)) {
@@ -54,6 +61,7 @@ class GetUsersDataFromNovi extends Request implements Paginatable
                     }
                 }
             }
+
             foreach ($details as $key => &$value) {
                 // Check if the key exists in the config array
                 if (array_key_exists($key, $userFields)) {
@@ -71,14 +79,30 @@ class GetUsersDataFromNovi extends Request implements Paginatable
                     }
                 }
 
+                if ($userFields[$key] === 'OpenDuesBalance') {
+                    $value = strval($openDueBalance) == "0" ? "0.00" : strval($openDueBalance);
+                }
+
                 // Modify the value of the "Gender" key
                 if ($userFields[$key] === 'Gender') {
-                    // Check if the value is 'Male' or 'Prefer Not to Answer' and assign 9 or 11 accordingly
                     $value = ($value === 'Male') ? 9 : (($value === 'Prefer Not to Answer') ? 11 : null);
                 }
+
+                if ($userFields[$key] === 'CustomerType') {
+                    $value = ($value === 'Person') ? 7 : 8;
+                }
+
+                if ($userFields[$key] === 'MemberStatus') {
+                    $value = ($value === 'current') ? 9 : null;
+                }
             }
+            unset($value);
         }
-        return $details;
+
+        return [
+            'email' => $email,
+            'details' => $details
+        ];
     }
 
 }
