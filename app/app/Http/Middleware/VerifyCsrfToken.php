@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         '/novi-update-listener',
         '/novi-remove-listener',
         'docebo-create-listener',
-        'docebo-transaction-listener'
+        'docebo-transaction-listener',
+	'docebo-selfregistred-listener'
     ];
 }
