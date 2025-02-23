@@ -7,9 +7,7 @@ use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
 use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
 use App\Http\Integrations\Novi\Requests\GetMemberDetailFromNovi;
-use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersSimpleDataFromNovi;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -41,13 +39,14 @@ class HomeController extends Controller
         return view('home', compact('doceboUsers'));
     }
 
-    public function empty(){
+    public function empty()
+    {
         $doceboConnector = new DoceboConnector();
         $noviConnector = new NoviConnector();
 
         $doceboUsersPaginator = $doceboConnector->paginate(new GetUsersDataFromDocebo);
         $doceboUsers = [];
-        foreach($doceboUsersPaginator as $pg){
+        foreach ($doceboUsersPaginator as $pg) {
             $data = $pg->dto();
             $doceboUsers = array_merge($doceboUsers, $data);
         }
@@ -69,7 +68,7 @@ class HomeController extends Controller
             }
         }
 
-        foreach($noviDoceboUsers as $user){
+        foreach ($noviDoceboUsers as $user) {
             $userFields = config('userfields');
             $data = array_map(function ($value) {
                 return null;
@@ -84,7 +83,7 @@ class HomeController extends Controller
         $doceboConnector = new DoceboConnector();
         $doceboUsersPaginator = $doceboConnector->paginate(new GetUsersDataFromDocebo);
         $doceboUsers = [];
-        foreach($doceboUsersPaginator as $pg){
+        foreach ($doceboUsersPaginator as $pg) {
             $data = $pg->dto();
             $doceboUsers = array_merge($doceboUsers, $data);
         }
@@ -111,7 +110,7 @@ class HomeController extends Controller
             }
             $noviDoceboUsers[] = $user;
         }
-        return view('home', compact('doceboUsers' , 'noviDoceboUsers'));
+        return view('home', compact('doceboUsers', 'noviDoceboUsers'));
     }
 
     public function sync()
@@ -121,7 +120,7 @@ class HomeController extends Controller
 
         $doceboUsersPaginator = $doceboConnector->paginate(new GetUsersDataFromDocebo);
         $doceboUsers = [];
-        foreach($doceboUsersPaginator as $pg){
+        foreach ($doceboUsersPaginator as $pg) {
             $data = $pg->dto();
             $doceboUsers = array_merge($doceboUsers, $data);
         }
@@ -143,16 +142,16 @@ class HomeController extends Controller
             }
         }
 
-        foreach($noviDoceboUsers as &$user){
-            $memberDataResponse = $noviConnector->send( new GetMemberDetailFromNovi($user['noviUuid']));
+        foreach ($noviDoceboUsers as &$user) {
+            $memberDataResponse = $noviConnector->send(new GetMemberDetailFromNovi($user['noviUuid']));
             $data = $memberDataResponse->dto();
             $result = ($doceboConnector->send(new UpdateUserFiledsData($user['docebo_id'], $data)));
-            if($result->dto() == true){
-               $user['status'] = "done";
+            if ($result->dto() == true) {
+                $user['status'] = "done";
             }
         }
         unset($user);
-        return view('home', compact('doceboUsers' , 'noviDoceboUsers'));
+        return view('home', compact('doceboUsers', 'noviDoceboUsers'));
     }
 
 

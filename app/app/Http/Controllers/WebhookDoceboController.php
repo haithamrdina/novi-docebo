@@ -6,8 +6,11 @@ use App\Http\Integrations\Docebo\DoceboConnector;
 use App\Http\Integrations\Docebo\Requests\GetTransactionAddress;
 use App\Http\Integrations\Docebo\Requests\GetUserDataByUserId;
 use App\Http\Integrations\Docebo\Requests\GetUsersData;
+use App\Http\Integrations\Docebo\Requests\GetUsersDataFromDocebo;
+use App\Http\Integrations\Docebo\Requests\UpdateUserFiledsData;
 use App\Http\Integrations\Novi\NoviConnector;
 use App\Http\Integrations\Novi\Requests\AddNewMember;
+use App\Http\Integrations\Novi\Requests\GetUsersDataFromNovi;
 use App\Http\Integrations\Novi\Requests\GetUsersEntityUniqueId;
 use App\Http\Integrations\Novi\Requests\UpdateBillingAndShippingAddress;
 use Illuminate\Http\Request;
@@ -36,17 +39,33 @@ class WebhookDoceboController extends Controller
 
         $doceboConnector = new DoceboConnector;
         $noviConnector = new NoviConnector;
+
         $doceboUsersDataResponse = $doceboConnector->send(new GetUsersData($username));
         $doceboUserData = $doceboUsersDataResponse->dto();
+
         if ($doceboUserData) {
-            $noviConnector->send(new AddNewMember($doceboUserData));
-            Log::info('["DOCEBO LMS"][user.created]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Added successfully in Novi');
-            return response()->json(['status' => 'success'], 200);
+            $noviMembercheckResponse = $noviConnector->send(new GetUsersDataFromNovi($doceboUserData['Email']));
+            $noviMemberData = $noviMembercheckResponse->dto();
+
+            // Updated this condition to check both email and details based on new structure
+            if ($noviMemberData['email'] && $noviMemberData['details']) {
+                $doceboUserDataResponse = $doceboConnector->send(new GetUsersDataFromDocebo($doceboUserData['Email']));
+                $doceboUserId = $doceboUserDataResponse->dto();
+
+                // Pass only the details to UpdateUserFiledsData
+                $doceboConnector->send(new UpdateUserFiledsData($doceboUserId, $noviMemberData['details']));
+
+                Log::info("[\"DOCEBO LMS\"][user.created]: Entity DOCEBO Unique ID: : {$doceboId} Updated successfully form Novi");
+                return response()->json(['status' => 'success'], 200);
+            } else {
+                $noviConnector->send(new AddNewMember($doceboUserData));
+                Log::info('["DOCEBO LMS"][user.created]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Added successfully in Novi');
+                return response()->json(['status' => 'success'], 200);
+            }
         } else {
             Log::warning('["DOCEBO LMS"][user.created]: Entity DOCEBO Unique ID: : ' . $doceboId . ' Unexpected error');
             return response()->json(['status' => 'success'], 200);
         }
-
     }
 
 
